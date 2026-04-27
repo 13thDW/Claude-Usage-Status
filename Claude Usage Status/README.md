@@ -3,17 +3,9 @@
 > A native macOS menu bar app that shows your Claude.ai usage limits in real time — no API key required.
 
 <div align="center">
-  <img src="screenshots/popover_dark.png" width="300" alt="Popover dark mode">
-  &nbsp;&nbsp;
-  <img src="screenshots/popover_light.png" width="300" alt="Popover light mode">
-</div>
-
-<br/>
-
-<div align="center">
-  <img src="screenshots/settings_general.png" width="380" alt="Settings — General">
-  &nbsp;&nbsp;
-  <img src="screenshots/settings_appearance.png" width="380" alt="Settings — Appearance">
+  <img src="screenshots/popover_dark.png" width="320" alt="Dark Mode">
+  &nbsp;&nbsp;&nbsp;
+  <img src="screenshots/popover_light.png" width="320" alt="Light Mode">
 </div>
 
 ---
@@ -170,6 +162,17 @@ Claude Usage Status/
 ├── SettingsView.swift           ← Settings window (General + Appearance tabs)
 └── Models.swift                 ← UsageData, MenuBarIconStyle, RingStyle
 ```
+
+---
+
+## Contributing
+
+PRs welcome. Open an issue first for significant changes.
+
+**Good first contributions:**
+- Custom SF Symbol or asset for "Icon Only" menu bar mode
+- Notification when usage crosses 80%
+- macOS Notification Center widget
 
 ---
 
