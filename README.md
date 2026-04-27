@@ -98,12 +98,12 @@ You only log in once. The session persists across reboots.
 ```
 ┌────────────────────────────────────────────────────┐
 │                macOS Menu Bar                      │
-│              ▓▓░░░░░░░ 17%   ✦                    │
+│              ▓▓░░░░░░░ 1 7%   ✦                    │
 └─────────────────────┬──────────────────────────────┘
                       │ click
                       ▼
 ┌────────────────────────────────────────────────────┐
-│          PopoverView (.ultraThinMaterial)           │
+│        PPopoverView (.ultraThinMaterial)           │
 │  ┌─────────────┐    │    ┌─────────────┐           │
 │  │ SESSION 17% │    │    │ WEEKLY 60%  │           │
 │  │ (5h window) │    │    │ (7d window) │           │
@@ -116,7 +116,7 @@ You only log in once. The session persists across reboots.
 │               WebViewManager                       │
 │  WKWebView (hidden) → callAsyncJavaScript          │
 │  fetch('claude.ai/api/organizations/…/usage')      │
-│  ← { five_hour: { utilization: 17.0 }, … }        │
+│  ← { five_hour: { utilization: 17.0 }, …  }        │
 └────────────────────────────────────────────────────┘
 ```
 
