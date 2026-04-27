@@ -165,17 +165,6 @@ Claude Usage Status/
 
 ---
 
-## Contributing
-
-PRs welcome. Open an issue first for significant changes.
-
-**Good first contributions:**
-- Custom SF Symbol or asset for "Icon Only" menu bar mode
-- Notification when usage crosses 80%
-- macOS Notification Center widget
-
----
-
 ## Disclaimer
 
 This is an unofficial third-party app, not affiliated with or endorsed by Anthropic. It reads data from the Claude.ai web interface using your own authenticated browser session.
