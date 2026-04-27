@@ -1,4 +1,3 @@
-//
 //  Claude_Usage_StatusApp.swift
 //  Claude Usage Status
 //
@@ -9,9 +8,27 @@ import SwiftUI
 
 @main
 struct Claude_Usage_StatusApp: App {
+    @StateObject private var appState = AppState()
+
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+
+        // ── Menu bar extra ────────────────────────────────────
+        MenuBarExtra {
+            PopoverView()
+                .environmentObject(appState)
+        } label: {
+            Text(appState.menuBarLabel)
+                .font(.system(size: 11, weight: .medium, design: .monospaced))
+        }
+        .menuBarExtraStyle(.window)
+
+        // ── Settings window ───────────────────────────────────
+        // Opened from the popover via:
+        //   NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        Settings {
+            SettingsView()
+                .environmentObject(appState)
         }
     }
 }
+
