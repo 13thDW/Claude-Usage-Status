@@ -1,34 +1,30 @@
-//  Claude_Usage_StatusApp.swift
-//  Claude Usage Status
-//
-//  Created by Whaler on 4/26/26.
-//
+// ClaudeUsageStatusApp.swift
+// Info.plist: LSUIElement = YES
 
 import SwiftUI
 
 @main
-struct Claude_Usage_StatusApp: App {
+struct ClaudeUsageStatusApp: App {
+
     @StateObject private var appState = AppState()
 
     var body: some Scene {
 
-        // ── Menu bar extra ────────────────────────────────────
         MenuBarExtra {
             PopoverView()
                 .environmentObject(appState)
         } label: {
-            Text(appState.menuBarLabel)
-                .font(.system(size: 11, weight: .medium, design: .monospaced))
+            // All styles render as NSImage (template) to avoid the SwiftUI
+            // MenuBarExtra bug where switching between Text and Image view
+            // types via conditional causes duplication artifacts.
+            Image(nsImage: appState.iconStyle.menuBarImage(for: appState.usage.sessionPercent))
+                .accessibilityLabel("Claude usage \(Int(appState.usage.sessionPercent * 100))%")
         }
         .menuBarExtraStyle(.window)
 
-        // ── Settings window ───────────────────────────────────
-        // Opened from the popover via:
-        //   NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
         Settings {
             SettingsView()
                 .environmentObject(appState)
         }
     }
 }
-

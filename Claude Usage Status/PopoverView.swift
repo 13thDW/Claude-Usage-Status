@@ -59,8 +59,10 @@ struct PopoverView: View {
             if state.isLoading {
                 ProgressView().scaleEffect(0.5).frame(width: 16, height: 16)
             }
-            // SettingsLink opens the window; simultaneousGesture brings it
-            // to front even if it is buried behind other windows.
+            // Gear → Settings.
+            // SettingsLink is the only reliable way to open the Settings scene
+            // from a MenuBarExtra. The simultaneousGesture then forces the
+            // window to front with a delay (window may not exist yet on first open).
             SettingsLink {
                 Image(systemName: "gearshape")
                     .font(.system(size: 12))
@@ -68,11 +70,18 @@ struct PopoverView: View {
             }
             .buttonStyle(.plain)
             .simultaneousGesture(TapGesture().onEnded {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    NSApp.activate(ignoringOtherApps: true)
-                    NSApp.windows
-                        .first { $0.title == "Settings" }?
-                        .makeKeyAndOrderFront(nil)
+                // Retry a few times — window may not exist yet on first tap
+                for delay in [0.15, 0.35, 0.6] {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                        NSApp.activate(ignoringOtherApps: true)
+                        let win = NSApp.windows.first { w in
+                            w.canBecomeKey
+                            && !w.title.isEmpty
+                            && w.title != "Sign in to Claude"
+                        }
+                        win?.makeKeyAndOrderFront(nil)
+                        win?.orderFrontRegardless()
+                    }
                 }
             })
         }
@@ -193,7 +202,8 @@ private struct FitnessRing: View {
                     .rotationEffect(.degrees(-90))
                     .animation(.spring(response: 0.6, dampingFraction: 0.7), value: percent)
 
-                glowTip
+                // glowTip — disabled (position needs calibration)
+                // glowTip
 
                 VStack(spacing: 1) {
                     Text("\(Int(percent * 100))")
@@ -220,17 +230,25 @@ private struct FitnessRing: View {
 
     @ViewBuilder
     private var glowTip: some View {
-        if percent > 0.01 {
+        if percent > 0.02 {
             let angle    = Angle.degrees(-90 + percent * 360)
-            let radius   = (diameter - lineWidth) / 2
-            let tipColor = percent.ringColors(style).last ?? .accentColor
+            let r        = (diameter - lineWidth) / 2
+            let tx       = cos(angle.radians) * r
+            let ty       = sin(angle.radians) * r
+            let tipColor = percent.ringColors(style).last ?? .primary
+
+            // Soft glow behind
             Circle()
-                .fill(tipColor)
-                .frame(width: lineWidth, height: lineWidth)
-                .shadow(color: tipColor.opacity(0.8), radius: 4)
-                .offset(x: cos(angle.radians) * radius,
-                        y: sin(angle.radians) * radius)
-                .animation(.spring(response: 0.6, dampingFraction: 0.7), value: percent)
+                .fill(tipColor.opacity(0.4))
+                .frame(width: lineWidth + 6, height: lineWidth + 6)
+                .blur(radius: 2)
+                .offset(x: tx, y: ty)
+
+            // Bright core dot, sits exactly on the arc center line
+            Circle()
+                .fill(.white.opacity(0.85))
+                .frame(width: lineWidth * 0.55, height: lineWidth * 0.55)
+                .offset(x: tx, y: ty)
         }
     }
 }

@@ -127,12 +127,15 @@ private struct AppearanceTab: View {
                         HStack {
                             Text(s.rawValue)
                             Spacer()
-                            // Preview at a legible size
-                            Text(s.label(for: 0.44))
-                                .font(s == .icon
-                                      ? .system(size: 15, weight: .regular)   // bigger for symbols
-                                      : .system(.caption, design: .monospaced))
-                                .foregroundStyle(.secondary)
+                            if s == .icon {
+                                // Live preview of the dynamic ring
+                                Image(nsImage: MenuBarIcon.nsImage(percent: 0.44, size: 14))
+                                    .foregroundStyle(.secondary)
+                            } else {
+                                Text(s.previewLabel(for: 0.44))
+                                    .font(.system(.caption, design: .monospaced))
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                         .tag(s)
                     }

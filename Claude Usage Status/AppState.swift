@@ -25,8 +25,6 @@ final class AppState: ObservableObject {
     private let pollInterval: TimeInterval = 300   // 5 min background poll
  
     // ── Computed ──────────────────────────────────────────────
-    var menuBarLabel: String { iconStyle.label(for: usage.sessionPercent) }
- 
     var maskedOrgID: String {
         guard let id = orgID, id.count > 12 else { return orgID ?? "—" }
         let prefix = id.prefix(6)
